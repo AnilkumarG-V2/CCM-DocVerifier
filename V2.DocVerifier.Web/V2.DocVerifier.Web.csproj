@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot_123\**" />
+    <Content Remove="wwwroot_123\**" />
+    <EmbeddedResource Remove="wwwroot_123\**" />
+    <None Remove="wwwroot_123\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Home\Index_old.cshtml" />
+    <Content Remove="Views\Shared\_Layout_old.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\Shared\_Layout_old.cshtml.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Spire.PDF" Version="11.4.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\V2.DocVerifier.Models\V2.DocVerifier.Models.csproj" />
+    <ProjectReference Include="..\V2.DocVerifier.Services\V2.DocVerifier.Services.csproj" />
+  </ItemGroup>
+
+</Project>

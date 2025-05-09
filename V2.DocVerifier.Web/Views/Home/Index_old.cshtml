@@ -1,0 +1,201 @@
+﻿@using V2.DocVerifier.Models;
+@model FileUpload;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>Gemini Doc Verifier</h1>
+
+<form enctype="multipart/form-data" method="post">
+    <table>
+        <tr>
+            <td>
+                <dl>
+                    <dt>
+                        <label asp-for="FormFile"></label>
+                    </dt>
+                    <dd>
+                        <input asp-for="FormFile" type="file" />
+                        <span asp-validation-for="FormFile"></span>
+                    </dd>
+                </dl>
+
+                <input asp-page-handler="Upload" class="btn" type="submit" value="Upload" />
+            </td>
+            <td>
+                @if (Model != null && !string.IsNullOrEmpty(Model.Json))
+                {
+                    <textarea id="completeJSON" rows="20" cols="80">@Model.Json</textarea>
+                }
+            </td>
+        </tr>
+    </table>
+
+    <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <img src="" class="imagepreview" style="width: 100%;height:100%">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model != null && Model.FormResponse != null)
+    {
+        <div class="accordion" id="accordionExample">
+            @{
+                var _headerCounter = 1;
+            }
+
+            @foreach (var document in Model.FormResponse)
+            {
+                var _headerId = "";
+                var _headerText = "";
+                var _pageNumber = "";
+                try
+                {
+                    _headerId = $"header{document.documentType}";
+                    _headerText = $"{document.documentType}";
+                }
+                catch
+                {
+                }
+
+
+                if (string.IsNullOrEmpty(_headerText))
+                {
+                    try
+                    {
+                        _headerId = $"header{document.document_type}";
+                        _headerText = $"{document.document_type}";
+                    }
+                    catch
+                    {
+                    }
+                }
+
+                try
+                {
+                    _pageNumber = $"header{document.pageNumber}";
+                }
+                catch
+                {
+
+                }
+
+                if (string.IsNullOrEmpty(_pageNumber))
+                {
+                    try
+                    {
+                        _pageNumber = $"header{document.page_number}";
+                    }
+                    catch
+                    {
+
+                    }
+                }
+
+
+                var _itemId = $"pageNumber{_pageNumber}{_headerCounter}";
+                var _tablebodyId = $"tableBody{_pageNumber}{_headerCounter}";
+                var _pageURL = $"{Model.FilePath}/{document.imageFile}";
+                _headerCounter = _headerCounter + 1;
+                var _headerValue = _headerText;
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="@_headerId">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@_itemId" aria-expanded="true" aria-controls="@_itemId">
+                            @_headerValue.ToUpper() # Page Number : @document.page_number
+                        </button>
+                    </h2>
+                    <div id="@_itemId" class="accordion-collapse collapse show" aria-labelledby="@_headerId" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Key</th>
+                                                        <th scope="col">Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="@_tablebodyId">
+                                                    <tr>
+                                                        <td>This is a test message</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <textarea hidden id="json" rows="20" cols="80" data-to-be-parsed data-to-be-render-control="@_tablebodyId">@document</textarea>
+                                            <a href="#" class="pop"><img src="@_pageURL" width="400px" height="600px" /></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</form>
+
+@section Scripts {
+    <script language="javascript">
+
+        function renderTable()
+        {
+            var _textAreaControl = document.querySelectorAll('[data-to-be-parsed]');
+            _textAreaControl.forEach(function (item){
+            var _tbodyControlName = item.attributes["data-to-be-render-control"].value;
+            var _tbodyControl = document.getElementById(_tbodyControlName);
+
+            var _json = JSON.parse(item.value);
+            var _control_string = "";
+            for(const key in _json)
+            {
+                if(_json[key] != undefined && typeof(_json[key]) != "object")
+                {
+                    _control_string = _control_string + "<tr><td>" + key + "</td><td>" + _json[key] + "</td></tr>";
+                }
+                else
+                {
+                    _control_string = _control_string + extractData(key, _json[key])
+                }
+            }
+            _tbodyControl.innerHTML = _control_string;
+            });
+        }
+
+        function extractData(key, jsonObject)
+        {
+            var _control_string = "";
+            for(const innerKey in jsonObject)
+            {
+                if(jsonObject[innerKey] != undefined && typeof(jsonObject[innerKey]) != "object")
+                {
+                    _control_string = _control_string + "<tr><td>" + key +"_" + innerKey + "</td><td>" + jsonObject[innerKey] + "</td></tr>";
+                }
+                else{
+                    _control_string = _control_string + extractData(key + "_" + innerKey, jsonObject[innerKey])
+                }
+            }
+            return _control_string;
+        }
+
+            $(function() {
+                $('.pop').on('click', function() {
+                    $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+                    $('#imagemodal').modal('show');
+                });
+        });
+
+        renderTable();
+    </script>
+}

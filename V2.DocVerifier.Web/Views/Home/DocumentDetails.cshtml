@@ -1,0 +1,71 @@
+﻿@using V2.DocVerifier.Models;
+@model GeminiResponse;
+
+@{
+    ViewData["Title"] = "Document Details";
+}
+
+<div class="call-left-wrap">
+    <div class="call-left-form">
+        <div class="header-line">
+            <h2>Document Details</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="d-flex justify-content-between">
+                    <div class="form-group mr-2">
+                        <button class="btn btn-default btn-back" type="button" id="btnLegalBack"><i class="fa-solid fa-chevron-left"></i> Back</button>
+                    </div>
+
+                    <div class="form-desc text-right">
+                        <button class="btn btn-default btn-back" type="button" id="btnSubmit" disabled>Submit</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary save-btn text-bold load-add" href="/Home"><i class="fal fa-plus"></i> New Document</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" width="100%">
+            <div class="col-md-8 bg-light border" style="overflow-y: scroll; height:800px;">
+                <table id="tblsearch" width="100%" class="support-case-table table dt-responsive mb-4">
+                    <thead>
+                        <tr>
+                            <th>Element</th>
+                            <th>Value</th>
+                            <th>Override</th>
+                            <th>Accuracy %</th>
+                        </tr>
+                    </thead>
+
+                    @{
+                        foreach (var item in Model.Elements)
+                        {
+                            var _result = item.ConfidenceScore * 100;
+                            <tr>
+                                <td>@item.Label</td>
+                                <td>@item.Value</td>
+                                <td><input type=text value = "@item.Value" /></td>
+                                <td>@_result</td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+            <div class="col-md-6 bg-light border">
+                <img src="@Model.FilePath/@Model.ImageName" />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/dist/components/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.9/jquery.mask.min.js" type="text/javascript"></script>
+    <script src="~/dist/components/filepond/dist/filepond.min.js"></script>
+    <script src="~/dist/components/filepond/jquery-filepond/filepond.jquery.js"></script>
+    <script src="~/dist/components/filepond/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
+    <script src="~/dist/components/filepond/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js"></script>
+    <script src="~/js/document_verifier/docverifier.js" type="text/javascript" asp-append-version="true"></script>
+}

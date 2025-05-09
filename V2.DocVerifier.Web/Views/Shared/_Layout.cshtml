@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>CCM | Document Verifier</title>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="MobileOptimized" content="320" />
+    <link rel="dns-prefetch" href="//code.jquery.com" />
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
+    <link rel="dns-prefetch" href="//pro.fontawesome.com" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://ccm-fonts.s3.us-east-2.amazonaws.com/fontawesome/css/fontawesome-optimized.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/document-verifier/document-verifier.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/document-verifier/header-footer.min.css" rel="stylesheet" />
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <header class="header">
+        <div class="container d-aic-jcsb">
+            <a href="#" class="header-logo">
+                <img src="~/images/logo.png" width="270" alt="CCM Logo" />
+            </a>
+            <div class="header-contact">
+            </div>
+        </div>
+    </header>
+    <section class="content call-center-main white-bg">
+        <div class="call-center-container">
+            @RenderBody()
+        </div>
+    </section>
+    <footer class="main-footer">
+        <h2 class="sr-only">Footer</h2>
+        <div class="social-network">
+            <div class="container d-aic-jcsb">
+                <a href="https://crosscountrymortgage.com/" class="Random-logo">
+                    <img src="/images/logo-dark.png" alt="Random Home" aria-label="Random Home" />
+                </a>
+                <div class="social-network-icons">
+                    <a href="https://www.facebook.com/crosscountrymrtg/" target="_blank">
+                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                        <span class="sr-only">Facebook CrossCountry Mortgage, LLC</span>
+                    </a>
+                    <a href="https://www.linkedin.com/company/crosscountry-mortgage" target="_blank">
+                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+                        <span class="sr-only">LinkedIn CrossCountry Mortgage, LLC</span>
+                    </a>
+                    <a href="https://twitter.com/crosscountrymtg" target="_blank">
+                        <i class="fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sr-only">Twitter CrossCountry Mortgage, LLC</span>
+                    </a>
+                    <a href="https://www.instagram.com/crosscountrymtg/" target="_blank">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                        <span class="sr-only">Instagram CrossCountry Mortgage, LLC</span>
+                    </a>
+                    <a href="https://www.youtube.com/channel/UCgguInv4WdSiYXipWyYFLYw" target="_blank">
+                        <i class="fab fa-youtube" aria-hidden="true"></i>
+                        <span class="sr-only">YouTube CrossCountry Mortgage, LLC</span>
+                    </a>
+                    <a href="https://www.zillow.com/lender-profile/CrossCountryMortgageLLC" target="_blank">
+                        <img src="/images/zillow.svg" width="26" alt="Zillow" />
+                        <span class="sr-only">Zillow CrossCountry Mortgage, Inc.</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.9/jquery.mask.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@dashboardcode/bsmultiselect@1.1.18/dist/js/BsMultiSelect.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
