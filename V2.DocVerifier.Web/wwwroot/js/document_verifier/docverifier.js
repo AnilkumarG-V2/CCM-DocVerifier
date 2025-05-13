@@ -16,7 +16,7 @@
     ];
 
     $('#FormFile').filepond({
-        allowMultiple: true,
+        allowMultiple: false,
         storeAsFile: true,
         maxFileSize: '5MB',
         acceptedFileTypes: validFiles,
