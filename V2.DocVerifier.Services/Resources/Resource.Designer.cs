@@ -70,6 +70,15 @@ namespace V2.DocVerifier.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ImagePath.
+        /// </summary>
+        internal static string ConfiguredImagePath {
+            get {
+                return ResourceManager.GetString("ConfiguredImagePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to \wwwroot\images\.
         /// </summary>
         internal static string ContentImagePath {

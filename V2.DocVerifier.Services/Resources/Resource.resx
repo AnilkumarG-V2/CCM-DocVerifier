@@ -120,6 +120,9 @@
   <data name="APIKey" xml:space="preserve">
     <value>APIKey</value>
   </data>
+  <data name="ConfiguredImagePath" xml:space="preserve">
+    <value>ImagePath</value>
+  </data>
   <data name="ContentImagePath" xml:space="preserve">
     <value>\wwwroot\images\</value>
   </data>

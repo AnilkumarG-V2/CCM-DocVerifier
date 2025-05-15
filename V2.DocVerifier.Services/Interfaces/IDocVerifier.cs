@@ -9,6 +9,6 @@ namespace V2.DocVerifier.Services
 {
     public interface IDocVerifier
     {
-        Task<List<GeminiResponse>> Process(GeminiRequest model);
+        Task<List<GeminiResponse>> Process(GeminiViewModel model);
     }
 }

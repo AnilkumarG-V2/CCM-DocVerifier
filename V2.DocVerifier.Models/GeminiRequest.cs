@@ -1,25 +1,32 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace V2.DocVerifier.Models
 {
-    public class GeminiRequest
+    public class GeminiViewModel
     {
-        public string Name { get; set; }
+        public GeminiViewModel(GeminiRequest request)
+        {
+            FormFile = request.FormFile;
+        }
 
         [DisplayName("Select Form")]
         public IFormFile FormFile { get; set; }
 
+        [JsonIgnore]
         public string FilePath { get; set; }
 
-        public string ContentType { get; set; }
-
+        [JsonIgnore]
         public string FileName { get; set; }
 
-        public GeminiResponse FormResponse { get; set; }
-
+        [JsonIgnore]
         public List<string> ImageFiles { get; set; } = new List<string>();
+    }
 
-        public string Json { get; set; }
+    public class GeminiRequest
+    {
+        [DisplayName("Select Form")]
+        public IFormFile FormFile { get; set; }
     }
 }

@@ -1,0 +1,6 @@
+@V2.DocVerifier.API_HostAddress = http://localhost:5079
+
+GET {{V2.DocVerifier.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
