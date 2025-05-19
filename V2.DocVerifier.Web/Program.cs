@@ -1,10 +1,11 @@
-using V2.DocVerifier.Services;
+using V2.DocVerifier.Services.UI.Interfaces;
+using V2.DocVerifier.Services.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<IDocVerifier, DocVerifierService>();
+builder.Services.AddTransient<IDocVerifier, DocVerifierUIService>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -13,9 +14,8 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.AddHttpClient<IDocVerifier, DocVerifierService>(client => {
-    client.BaseAddress = new Uri(builder.Configuration["DocVerifierURL"]);
-
+builder.Services.AddHttpClient<IDocVerifier, DocVerifierUIService>(client => {
+    client.BaseAddress = new Uri(builder.Configuration["DocVerifierBaseURL"]);
 });
 
 var app = builder.Build();

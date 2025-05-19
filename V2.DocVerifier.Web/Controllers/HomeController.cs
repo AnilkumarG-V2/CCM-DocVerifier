@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using V2.DocVerifier.Models;
-using V2.DocVerifier.Services;
+using V2.DocVerifier.Services.UI.Interfaces;
 
 namespace V2.DocVerifier.Web.Controllers
 {
@@ -24,8 +24,7 @@ namespace V2.DocVerifier.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(GeminiRequest model)
         {
-            GeminiViewModel viewModel = new GeminiViewModel(model);
-            HttpContext.Session.Set<List<GeminiResponse>>("docResponse", await _docVerifier.Process(viewModel));
+            HttpContext.Session.Set<List<GeminiResponse>>("docResponse", await _docVerifier.Execute(model));
             return RedirectToAction("ListDocuments");
         }
 

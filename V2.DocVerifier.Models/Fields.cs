@@ -16,7 +16,7 @@ namespace V2.DocVerifier.Models
         public string Value { get; set; }
 
         [JsonProperty(PropertyName = "confidence_score")]
-        public float ConfidenceScore { get; set; }
+        public float Confidence_Score { get; set; }
 
         [JsonProperty(PropertyName = "y")]
         public int Y { get; set; }

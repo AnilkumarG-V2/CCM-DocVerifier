@@ -23,14 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Spire.PDF" Version="11.4.10" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\V2.DocVerifier.Models\V2.DocVerifier.Models.csproj" />
-    <ProjectReference Include="..\V2.DocVerifier.Services\V2.DocVerifier.Services.csproj" />
+    <ProjectReference Include="..\V2.DocVerifier.Services.UI\V2.DocVerifier.Services.UI.csproj" />
   </ItemGroup>
 
 </Project>

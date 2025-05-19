@@ -1,12 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System.Drawing;
 using System.Text;
 using V2.DocVerifier.Models;
 using Spire.Pdf;
 using Spire.Pdf.Graphics;
 using Microsoft.Extensions.Logging;
-using Image = System.Drawing.Image;
-using System.Drawing.Imaging;
 using Microsoft.Extensions.Configuration;
 using V2.DocVerifier.Services.Resources;
 
@@ -33,7 +30,6 @@ namespace V2.DocVerifier.Services
             return json;
         }
 
-
         public async Task<List<GeminiResponse>> ProcessTask(GeminiViewModel model)
         {
             var tasks = new List<Task>();
@@ -51,7 +47,6 @@ namespace V2.DocVerifier.Services
         private async Task ProcessFiles(GeminiViewModel model, int pageNumber, List<GeminiResponse> response, string file)
         {
             var _responseData = await GetGeminiResponse(Resource.DocDataPrompt, file);
-            //string _imageFileName = await ProcessMapping(_responseData, file);
             foreach (var item in _responseData)
             {
                 item.PageNumber = Convert.ToString(pageNumber++);
@@ -87,8 +82,8 @@ namespace V2.DocVerifier.Services
 
                     for (int _counter = 0; _counter < pdfDocument.Pages.Count; ++_counter)
                     {
-                        Image image = pdfDocument.SaveAsImage(_counter, PdfImageType.Bitmap, 500, 500);
-                        image.Save(@$"{_path}\{Resource.ImageFilePrefix}{_counter + 1}.{Resource.DestinationImageFileExtension}", ImageFormat.Jpeg);
+                        var image = pdfDocument.SaveAsImage(_counter, PdfImageType.Bitmap);
+                        image.Save(@$"{_path}\{Resource.ImageFilePrefix}{_counter + 1}.{Resource.DestinationImageFileExtension}");
                         model.ImageFiles.Add(@$"{_path}\{Resource.ImageFilePrefix}{_counter + 1}.{Resource.DestinationImageFileExtension}");
                     }
                 }
@@ -104,10 +99,11 @@ namespace V2.DocVerifier.Services
             try
             {
                 HttpResponseMessage _response = null;
+                string fileContent = string.Empty;
                 if (!string.IsNullOrWhiteSpace(fileName))
                 {
                     var fileBytes = System.IO.File.ReadAllBytes(fileName);
-                    var fileContent = Convert.ToBase64String(fileBytes);
+                    fileContent = Convert.ToBase64String(fileBytes);
                     var jsonFile = GetPrompt(prompt, fileContent);
                     HttpContent content = new StringContent(jsonFile, Encoding.UTF8, Resource.ResponseMimeType);
                     _response = await _httpClient.PostAsync(@$"{_configuration[Resource.DocVerifierEndPoint]}{_configuration[Resource.APIKey]}", content);
@@ -115,7 +111,9 @@ namespace V2.DocVerifier.Services
                 var _responseData = await _response.Content.ReadAsStringAsync();
                 var _json = JsonConvert.DeserializeObject<dynamic>(_responseData);
                 var _text = _json?.candidates[0]?.content?.parts[0].text;
-                return JsonConvert.DeserializeObject<List<GeminiResponse>>(_text.ToString());
+                List<GeminiResponse> _responseObject =  JsonConvert.DeserializeObject<List<GeminiResponse>>(_text.ToString());
+                _responseObject.ForEach(x => x.ImageContent = fileContent);
+                return _responseObject;
             }
             catch (Exception ex)
             {

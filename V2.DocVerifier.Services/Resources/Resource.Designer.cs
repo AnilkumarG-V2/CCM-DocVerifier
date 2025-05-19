@@ -97,7 +97,7 @@ namespace V2.DocVerifier.Services.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Detect and analyze multiple documents within the provided file, process their content, extract relevant data, generate a structured hierarchical JSON use response template {&quot;documentType&quot;:&quot;&quot;,&quot;pageNumber&quot;:0,&quot;confidenceScore&quot;:0.00,&quot;elements&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;value&quot;:&quot;&quot;,&quot;confidence_score&quot;:0.00,&quot;x&quot;:0,&quot;y&quot;:0,&quot;height&quot;:0,&quot;width&quot;:0}]} format for each document. Combine all responses into an array.
+        ///   Looks up a localized string similar to Detect and analyze multiple documents within the provided file, process their content, extract relevant data, generate a structured hierarchical JSON use response template {&quot;documentType&quot;:&quot;&quot;,&quot;pageNumber&quot;:0,&quot;confidenceScore&quot;:0.00, &quot;imageWidth&quot;:0.00,&quot;imageHeight&quot;:0.00, &quot;aspectRatio&quot;:0.00,imageResolutionX:0.00,imageResolutionY:0.00,elements&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;value&quot;:&quot;&quot;,&quot;confidence_score&quot;:0.00,&quot;x&quot;:0,&quot;y&quot;:0,&quot;height&quot;:0,&quot;width&quot;:0}]} format for each document. Combine all responses into an array..
         /// </summary>
         internal static string DocDataPrompt {
             get {

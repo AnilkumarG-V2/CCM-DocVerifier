@@ -117,43 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="APIKey" xml:space="preserve">
-    <value>APIKey</value>
-  </data>
-  <data name="ConfiguredImagePath" xml:space="preserve">
-    <value>ImagePath</value>
-  </data>
-  <data name="ContentImagePath" xml:space="preserve">
-    <value>\wwwroot\images\</value>
-  </data>
-  <data name="DestinationImageFileExtension" xml:space="preserve">
-    <value>jpeg</value>
-  </data>
-  <data name="DocDataPrompt" xml:space="preserve">
-    <value>Detect and analyze multiple documents within the provided file, process their content, extract relevant data, generate a structured hierarchical JSON use response template {"documentType":"","pageNumber":0,"confidenceScore":0.00, "imageWidth":0.00,"imageHeight":0.00, "aspectRatio":0.00,imageResolutionX:0.00,imageResolutionY:0.00,elements":[{"label":"","value":"","confidence_score":0.00,"x":0,"y":0,"height":0,"width":0}]} format for each document. Combine all responses into an array.</value>
-  </data>
-  <data name="DocVerifierEndPoint" xml:space="preserve">
-    <value>DocVerifierEndPoint</value>
-  </data>
-  <data name="FileNameDateTimeFormat" xml:space="preserve">
-    <value>yyyyMMddHHmmss</value>
-  </data>
-  <data name="FinalImageMappedPrefix" xml:space="preserve">
-    <value>_mapped</value>
-  </data>
-  <data name="ImageFileAbsolutePath" xml:space="preserve">
-    <value>/images/</value>
-  </data>
-  <data name="ImageFilePrefix" xml:space="preserve">
-    <value>page_</value>
-  </data>
-  <data name="PDFFileExtension" xml:space="preserve">
-    <value>pdf</value>
-  </data>
-  <data name="PlottingPrompt" xml:space="preserve">
-    <value>Extract each element and return box data in x, y, width and height</value>
-  </data>
-  <data name="ResponseMimeType" xml:space="preserve">
-    <value>application/json</value>
+  <data name="DocResponseName" xml:space="preserve">
+    <value>docResponse</value>
   </data>
 </root>
