@@ -1,4 +1,4 @@
-namespace V2.DocVerifier.Web.Models
+namespace V2.DocVerifier.Models
 {
     public class ErrorViewModel
     {

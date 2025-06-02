@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
@@ -12,15 +13,17 @@ namespace V2.DocVerifier.Services.UI.Services
         private readonly ILogger<DocVerifierUIService> _logger;
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
+        private readonly IHostEnvironment _hostEnvironment;
 
-        public DocVerifierUIService(ILogger<DocVerifierUIService> logger, HttpClient httpClient, IConfiguration configuration)
+        public DocVerifierUIService(ILogger<DocVerifierUIService> logger, HttpClient httpClient, IConfiguration configuration, IHostEnvironment hostEnvironment)
         {
             _logger = logger;
             _httpClient = httpClient;
             _configuration = configuration;
+            _hostEnvironment = hostEnvironment;
         }
 
-        public async Task<List<GeminiResponse>> Execute(GeminiRequest model)
+        public async Task<List<GeminiResponse>> ExecuteAsync(GeminiRequest model)
         {
             HttpResponseMessage _response = null;
             try
@@ -39,6 +42,28 @@ namespace V2.DocVerifier.Services.UI.Services
             {
                 return null;
             }
+        }
+
+        public async Task<List<GeminiPayStubResult>> GetPayStubResultsAsync()
+        {
+            List<GeminiPayStubResult> _collection = new List<GeminiPayStubResult>();
+            var _path = @$"{_hostEnvironment.ContentRootPath}/wwwroot/js/results";
+            var _jsonResults = Directory.GetFiles(_path);
+
+            foreach(var _jsonResult in _jsonResults)
+            {
+                _collection.Add(new GeminiPayStubResult() { Name = Path.GetFileNameWithoutExtension(_jsonResult), FileName = Path.GetFileName(_jsonResult), Type = "Paystub" });
+            }
+
+            return _collection;
+        }
+
+        public async Task<List<GeminiResponse>> LoadPayStubAsync(string fileName)
+        {
+            var _path = @$"{_hostEnvironment.ContentRootPath}/wwwroot/js/results/{fileName}";
+            var _jsonContent = File.ReadAllText(_path);
+            List<GeminiResponse> _responseObject = JsonConvert.DeserializeObject<List<GeminiResponse>>(_jsonContent);
+            return _responseObject;
         }
     }
 }

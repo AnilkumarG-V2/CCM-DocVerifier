@@ -130,7 +130,7 @@
     <value>jpeg</value>
   </data>
   <data name="DocDataPrompt" xml:space="preserve">
-    <value>Detect and analyze multiple documents within the provided file, process their content, extract relevant data, generate a structured hierarchical JSON use response template {"documentType":"","pageNumber":0,"confidenceScore":0.00, "imageWidth":0.00,"imageHeight":0.00, "aspectRatio":0.00,imageResolutionX:0.00,imageResolutionY:0.00,elements":[{"label":"","value":"","confidence_score":0.00,"x":0,"y":0,"height":0,"width":0}]} format for each document. Combine all responses into an array.</value>
+    <value>Detect and analyze multiple documents within the provided file, process their content, extract relevant data, generate a structured hierarchical JSON use response template {"documentType":"","pageNumber":0,"confidenceScore":0,"isFraudDocument":"boolean","isReissued":"boolean","imageWidth":0,"imageHeight":0,"aspectRatio":0,"imageResolutionX":0,"imageResolutionY":0,"elements":[{"label":"","value":"","confidence_score":0,"isFraudValue":"boolean","x":0,"y":0,"height":0,"width":0}]} format for each document. Combine all responses into an array.</value>
   </data>
   <data name="DocVerifierEndPoint" xml:space="preserve">
     <value>DocVerifierEndPoint</value>
@@ -155,5 +155,8 @@
   </data>
   <data name="ResponseMimeType" xml:space="preserve">
     <value>application/json</value>
+  </data>
+  <data name="ValidatorPrompt" xml:space="preserve">
+    <value>Detect and analyze multiple documents within the provided file, process their content, extract relevant data, generate a structured hierarchical JSON use response template {"documentType":"","pageNumber":0,"confidenceScore":0,"isFraudDocument":"boolean","isReissued":"boolean","imageWidth":0,"imageHeight":0,"aspectRatio":0,"imageResolutionX":0,"imageResolutionY":0,"elements":{"employee_social_security_number":{"value":"","confidence_score":0,"isFraudValue":"boolean","x":0,"y":0,"height":0,"width":0},"employer_identification_number":{"value":"","confidence_score":0,"isFraudValue":"boolean","x":0,"y":0,"height":0,"width":0},"employer_name":{"value":"","confidence_score":0,"isFraudValue":"boolean","x":0,"y":0,"height":0,"width":0},"employer_city":{"value":"","confidence_score":0,"isFraudValue":"boolean","x":0,"y":0,"height":0,"width":0},"employer_zip_code":{"value":"","confidence_score":0,"isFraudValue":"boolean","x":0,"y":0,"height":0,"width":0}}} format for each document. Combine all responses into an array.</value>
   </data>
 </root>

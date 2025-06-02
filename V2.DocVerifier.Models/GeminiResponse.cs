@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace V2.DocVerifier.Models
 {
@@ -50,5 +45,11 @@ namespace V2.DocVerifier.Models
 
         [JsonProperty(PropertyName = "imageResolutionY")]
         public float ImageResolutionY { get; set; }
+
+        [JsonProperty(PropertyName = "isFraudDocument")]
+        public bool IsFraudDocument { get; set; }
+
+        [JsonProperty(PropertyName = "isReissued")]
+        public bool IsReissued { get; set; }
     }
 }

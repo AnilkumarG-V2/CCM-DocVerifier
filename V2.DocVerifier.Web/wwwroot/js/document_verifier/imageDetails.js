@@ -12,7 +12,6 @@ function loadImage(imageWidth, imageHeight, imageContent)
 
     var base64ImageContent =  "data:image/jpeg;base64,"+imageContent
     _img.setAttribute('src', base64ImageContent);
-    //_img.src = "/images/gemini_response.jpg";
 
     _img.width = imageWidth;
     _img.height = imageHeight;
@@ -21,14 +20,6 @@ function loadImage(imageWidth, imageHeight, imageContent)
 
     _img.onload = () => {
         const aspectRatio = _img.width / _img.height;
-
-        //let width = pageWidth * zoom;
-        //let height = (pageWidth * zoom) / aspectRatio;
-
-        // if (height > pageHeight) {
-        //     height = pageHeight;
-        //     width = pageWidth;
-        // }
 
         canvas.width = _img.width;
         canvas.height = _img.height;
@@ -47,20 +38,9 @@ function plotCordinate(X, Y, Height, Width) {
 
     x = (X * canvas.width) / 1000;
     y = (Y * canvas.height) / 1000;
-    /*height = (Height * canvas.height) / 1000;
-    width = (Width * canvas.width) / 1000;*/
-
-    console.log(x);
-    console.log(y);
-
-
     context.setLineDash([]);
     context.strokeStyle = "green";
     context.lineWidth = 2;
-    /*context.fillStyle = "rgba(255, 0, 0, 0.4)";
-    context.fillRect(x, y, Width, Height);*/
-
-
     context.fillStyle = "rgba(0, 255, 0, 0.4)";
     context.fillRect(x, y, Width, Height);
 }

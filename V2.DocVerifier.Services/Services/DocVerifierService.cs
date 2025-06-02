@@ -22,43 +22,42 @@ namespace V2.DocVerifier.Services
             _configuration = configuration;
         }
 
-        public async Task<List<GeminiResponse>> Process(GeminiViewModel model)
+        public async Task<List<GeminiResponse>> ProcessAsync(GeminiViewModel model)
         {
-            await SplitFile(model);
+            await SplitFileAsync(model);
             model.FileName = model.FormFile.FileName;
-            var json = await ProcessTask(model);
+            var json = await ProcessTaskAsync(model);
             return json;
         }
 
-        public async Task<List<GeminiResponse>> ProcessTask(GeminiViewModel model)
+        private async Task<List<GeminiResponse>> ProcessTaskAsync(GeminiViewModel model)
         {
             var tasks = new List<Task>();
             int pageNumber = 1;
             List<GeminiResponse> response = new List<GeminiResponse>();
             foreach (var file in model.ImageFiles)
             {
-                tasks.Add(ProcessFiles(model, pageNumber, response, file));
+                tasks.Add(ProcessFilesAsync(model, pageNumber, response, file));
             }
             Task t = Task.WhenAll(tasks);
             t.Wait();
             return response;
         }
 
-        private async Task ProcessFiles(GeminiViewModel model, int pageNumber, List<GeminiResponse> response, string file)
+        private async Task ProcessFilesAsync(GeminiViewModel model, int pageNumber, List<GeminiResponse> response, string file)
         {
-            var _responseData = await GetGeminiResponse(Resource.DocDataPrompt, file);
+            var _responseData = await GetGeminiResponseAsync(Resource.DocDataPrompt, file);
             foreach (var item in _responseData)
             {
                 item.PageNumber = Convert.ToString(pageNumber++);
                 item.ImageName = Path.GetFileName(file);
                 item.ContentType = model.FormFile.ContentType;
                 item.FileName = model.FileName;
-                item.FilePath = model.FilePath;
                 response.Add(item);
             }
         }
 
-        private async Task SplitFile(GeminiViewModel model)
+        private async Task SplitFileAsync(GeminiViewModel model)
         {
             string _datetime = DateTime.Now.ToString(Resource.FileNameDateTimeFormat);
             if (model.FormFile.Length > 0)
@@ -94,7 +93,7 @@ namespace V2.DocVerifier.Services
             }
         }
 
-        private async Task<List<GeminiResponse>> GetGeminiResponse(string prompt, string fileName)
+        private async Task<List<GeminiResponse>> GetGeminiResponseAsync(string prompt, string fileName)
         {
             try
             {

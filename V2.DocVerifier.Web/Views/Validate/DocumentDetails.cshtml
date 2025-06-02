@@ -1,0 +1,119 @@
+﻿@using V2.DocVerifier.Models;
+@model GeminiDestinationData;
+
+@{
+    ViewData["Title"] = "Document Details";
+}
+
+<div class="call-center-wrap">
+    <div class="call-center-form">
+        <div class="header-line">
+            <h2>Document Validation Details</h2>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="text-end">
+                    <button class="btn btn-default btn-back" type="button" id="btnValidateBack"><i class="fa-solid fa-chevron-left"></i> Back</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="btn btn-primary save-btn text-bold load-add" href="/Home"><i class="fal fa-plus"></i> New Document</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="btn btn-primary save-btn text-bold load-add" href="/Home/ListPayStubResults">Paystub Results</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="btn btn-primary save-btn text-bold load-add" href="/Validate/Index">Paystub Validator</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" width="100%">
+            <div class="col-md-4 bg-light border" style="overflow-y: scroll; height:800px;">
+                <table id="tblsearch" width="100%" class="support-case-table table dt-responsive mb-4">
+                    <thead>
+                        <tr>
+                            <th>Attributes</th>
+                            <th>Encompass Value</th>
+                            <th>Document Value</th>
+                            <th>Accuracy %</th>
+                        </tr>
+                    </thead>
+
+                    @{
+                        var item = @Model.Elements.Employee_Social_Security_Number;
+                        var _color = item.Value == item.SourceValue ? "lightgreen" : "lightcoral";
+                    }
+
+                    <tr onmouseover="plotCordinate(@item.X,@item.Y, @item.Height, @item.Width)" onmouseout="clearPlot(@item.X,@item.Y, @item.Height, @item.Width)" style="background-color:@_color">
+                        <td>Employee Social Security Number</td>
+                        <td>@item.SourceValue</td>
+                        <td>@item.Value</td>
+                        <td>@(item.Confidence_Score * 100)</td>
+                    </tr>
+
+                    @{
+                        item = @Model.Elements.Employer_Identification_Number;
+                        _color = item.Value == item.SourceValue ? "lightgreen" : "lightcoral";
+                    }
+
+                    <tr onmouseover="plotCordinate(@item.X,@item.Y, @item.Height, @item.Width)" onmouseout="clearPlot(@item.X,@item.Y, @item.Height, @item.Width)" style="background-color:@_color">
+                        <td>Employer Identification Number</td>
+                        <td>@item.SourceValue</td>
+                        <td>@item.Value</td>
+                        <td>@(item.Confidence_Score * 100)</td>
+                    </tr>
+
+                    @{
+                        item = @Model.Elements.Employer_Name;
+                        _color = item.Value == item.SourceValue ? "lightgreen" : "lightcoral";
+                    }
+
+                    <tr onmouseover="plotCordinate(@item.X,@item.Y, @item.Height, @item.Width)" onmouseout="clearPlot(@item.X,@item.Y, @item.Height, @item.Width)" style="background-color:@_color">
+                        <td>Employer Name</td>
+                        <td>@item.SourceValue</td>
+                        <td>@item.Value</td>
+                        <td>@(item.Confidence_Score * 100)</td>
+                    </tr>
+
+                    @{
+                        item = @Model.Elements.Employer_Zip_Code;
+                        _color = item.Value == item.SourceValue ? "lightgreen" : "lightcoral";
+                    }
+
+                    <tr onmouseover="plotCordinate(@item.X,@item.Y, @item.Height, @item.Width)" onmouseout="clearPlot(@item.X,@item.Y, @item.Height, @item.Width)" style="background-color:@_color">
+                        <td>Employer Zip Code</td>
+                        <td>@item.SourceValue</td>
+                        <td>@item.Value</td>
+                        <td>@(item.Confidence_Score * 100)</td>
+                    </tr>
+
+                    @{
+                        item = @Model.Elements.Employer_City;
+                        _color = item.Value == item.SourceValue ? "lightgreen" : "lightcoral";
+                    }
+
+                    <tr onmouseover="plotCordinate(@item.X,@item.Y, @item.Height, @item.Width)" onmouseout="clearPlot(@item.X,@item.Y, @item.Height, @item.Width)" style="background-color:@_color">
+                        <td>Employer City</td>
+                        <td>@item.SourceValue</td>
+                        <td>@item.Value</td>
+                        <td>@(item.Confidence_Score * 100)</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-8 bg-light border">
+                <div className="canvas-section flex-grow-1 bg-light h-100 overflow-auto hide-scrollbar border rounded d-flex justify-content-center">
+                    <canvas id="myCanvas" className="bg-white" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/dist/components/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.9/jquery.mask.min.js" type="text/javascript"></script>
+    <script src="~/dist/components/filepond/dist/filepond.min.js"></script>
+    <script src="~/dist/components/filepond/jquery-filepond/filepond.jquery.js"></script>
+    <script src="~/dist/components/filepond/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
+    <script src="~/dist/components/filepond/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js"></script>
+    <script src="~/js/document_verifier/docverifier.js" type="text/javascript" asp-append-version="true"></script>
+    <script src="~/js/document_verifier/imageDetails.js" type="text/javascript" asp-append-version="true"></script>
+    <script>
+        loadImage(@Model.ImageWidth, @Model.ImageHeight, @Html.Raw(Json.Serialize(@Model.ImageContent)));
+    </script>
+}

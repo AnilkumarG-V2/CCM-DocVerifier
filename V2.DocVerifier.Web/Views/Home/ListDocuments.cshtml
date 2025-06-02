@@ -14,7 +14,9 @@
         <div class="row">
             <div class="col">
                 <div class="text-end">
-                    <a class="btn btn-primary save-btn text-bold load-add" href="/Home"><i class="fal fa-plus"></i> New Document</a>
+                    <a class="btn btn-primary save-btn text-bold load-add" href="/Home"><i class="fal fa-plus"></i> New Document</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="btn btn-primary save-btn text-bold load-add" href="/Home/ListPayStubResults">Paystub Results</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="btn btn-primary save-btn text-bold load-add" href="/Validate/Index">Paystub Validator</a>
                 </div>
             </div>
         </div>
@@ -28,6 +30,8 @@
                             <th>File Name</th>
                             <th>File Type</th>
                             <th>Accuracy %</th>
+                            <th>Is Document Fraud</th>
+                            <th>Is Document Duplicate</th>
                         </tr>
                     </thead>
 
@@ -40,6 +44,8 @@
                                 <td>@item.FileName</td>
                                 <td>@item.ContentType</td>
                                 <td>@_result</td>
+                                <td>@item.IsFraudDocument</td>
+                                <td>@item.IsReissued</td>
                             </tr>
                         }
                     }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 using V2.DocVerifier.Models;
 using V2.DocVerifier.Services.UI.Interfaces;
 
@@ -24,7 +25,7 @@ namespace V2.DocVerifier.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(GeminiRequest model)
         {
-            HttpContext.Session.Set<List<GeminiResponse>>("docResponse", await _docVerifier.Execute(model));
+            HttpContext.Session.Set<List<GeminiResponse>>("docResponse", await _docVerifier.ExecuteAsync(model));
             return RedirectToAction("ListDocuments");
         }
 
@@ -41,6 +42,20 @@ namespace V2.DocVerifier.Web.Controllers
             var responseData = HttpContext.Session.Get<List<GeminiResponse>>("docResponse");
             var model = responseData.Where(data=> data.DocumentType == docType && data.PageNumber == pageNumber.ToString()).FirstOrDefault();
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ListPayStubResults()
+        {
+            var model = await _docVerifier.GetPayStubResultsAsync();
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LoadPayStub(string fileName)
+        {
+            HttpContext.Session.Set<List<GeminiResponse>>("docResponse", await _docVerifier.LoadPayStubAsync(fileName));
+            return RedirectToAction("ListDocuments");
         }
 
         public IActionResult Privacy()

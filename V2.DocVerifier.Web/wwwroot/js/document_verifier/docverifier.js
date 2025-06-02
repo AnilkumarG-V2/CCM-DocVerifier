@@ -28,6 +28,14 @@
         window.location.href = "/Home/ListDocuments";
     });       
 
+
+    $('#btnValidateBack').on('click', function () {
+        $.LoadingOverlay("show");
+        window.location.href = "/Validate/ListDocuments";
+    });       
+    
+
+
     $validator = $("#document-verifier-submit").validate({
         submitHandler: function (form) {
             $.LoadingOverlay("show");

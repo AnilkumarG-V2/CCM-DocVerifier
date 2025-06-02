@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IDocVerifier, DocVerifierUIService>();
+builder.Services.AddTransient<IDocValidator, DocValidatorUIService>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -15,6 +16,10 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddHttpClient<IDocVerifier, DocVerifierUIService>(client => {
+    client.BaseAddress = new Uri(builder.Configuration["DocVerifierBaseURL"]);
+});
+
+builder.Services.AddHttpClient<IDocValidator, DocValidatorUIService>(client => {
     client.BaseAddress = new Uri(builder.Configuration["DocVerifierBaseURL"]);
 });
 

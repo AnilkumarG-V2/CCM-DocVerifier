@@ -97,7 +97,7 @@ namespace V2.DocVerifier.Services.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Detect and analyze multiple documents within the provided file, process their content, extract relevant data, generate a structured hierarchical JSON use response template {&quot;documentType&quot;:&quot;&quot;,&quot;pageNumber&quot;:0,&quot;confidenceScore&quot;:0.00, &quot;imageWidth&quot;:0.00,&quot;imageHeight&quot;:0.00, &quot;aspectRatio&quot;:0.00,imageResolutionX:0.00,imageResolutionY:0.00,elements&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;value&quot;:&quot;&quot;,&quot;confidence_score&quot;:0.00,&quot;x&quot;:0,&quot;y&quot;:0,&quot;height&quot;:0,&quot;width&quot;:0}]} format for each document. Combine all responses into an array..
+        ///   Looks up a localized string similar to Detect and analyze multiple documents within the provided file, process their content, extract relevant data, generate a structured hierarchical JSON use response template {&quot;documentType&quot;:&quot;&quot;,&quot;pageNumber&quot;:0,&quot;confidenceScore&quot;:0,&quot;isFraudDocument&quot;:&quot;boolean&quot;,&quot;isReissued&quot;:&quot;boolean&quot;,&quot;imageWidth&quot;:0,&quot;imageHeight&quot;:0,&quot;aspectRatio&quot;:0,&quot;imageResolutionX&quot;:0,&quot;imageResolutionY&quot;:0,&quot;elements&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;value&quot;:&quot;&quot;,&quot;confidence_score&quot;:0,&quot;isFraudValue&quot;:&quot;boolean&quot;,&quot;x&quot;:0,&quot;y&quot;:0,&quot;height&quot;:0,&quot;width&quot;:0}]} format for each document. Com [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DocDataPrompt {
             get {
@@ -174,6 +174,15 @@ namespace V2.DocVerifier.Services.Resources {
         internal static string ResponseMimeType {
             get {
                 return ResourceManager.GetString("ResponseMimeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detect and analyze multiple documents within the provided file, process their content, extract relevant data, generate a structured hierarchical JSON use response template {&quot;documentType&quot;:&quot;&quot;,&quot;pageNumber&quot;:0,&quot;confidenceScore&quot;:0,&quot;isFraudDocument&quot;:&quot;boolean&quot;,&quot;isReissued&quot;:&quot;boolean&quot;,&quot;imageWidth&quot;:0,&quot;imageHeight&quot;:0,&quot;aspectRatio&quot;:0,&quot;imageResolutionX&quot;:0,&quot;imageResolutionY&quot;:0,&quot;elements&quot;:{&quot;employee_social_security_number&quot;:{&quot;value&quot;:&quot;&quot;,&quot;confidence_score&quot;:0,&quot;isFraudValue&quot;:&quot;boolean&quot;,&quot;x&quot;:0,&quot;y&quot;:0,&quot;height&quot;:0,&quot;width&quot;:0},&quot;employe [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ValidatorPrompt {
+            get {
+                return ResourceManager.GetString("ValidatorPrompt", resourceCulture);
             }
         }
     }

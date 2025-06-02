@@ -3,27 +3,29 @@ using V2.DocVerifier.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IDocVerifier, DocVerifierService>();
+builder.Services.AddTransient<IDocValidator, DocValidatorServcie>();
 
 builder.Services.AddHttpClient<IDocVerifier, DocVerifierService>(client => {
     client.BaseAddress = new Uri(builder.Configuration["DocVerifierURL"]);
 
 });
 
-var app = builder.Build();
+builder.Services.AddHttpClient<IDocValidator, DocValidatorServcie>(client => {
+    client.BaseAddress = new Uri(builder.Configuration["DocVerifierURL"]);
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
+});
+
+var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
     app.UseSwagger();
     app.UseSwaggerUI();
-//}
+}
 
 app.UseAuthorization();
 app.MapControllers();

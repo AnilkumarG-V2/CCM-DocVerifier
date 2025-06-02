@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using V2.DocVerifier.Web.Models;
+using V2.DocVerifier.Models;
 
 namespace V2.DocVerifier.Web.Controllers
 {

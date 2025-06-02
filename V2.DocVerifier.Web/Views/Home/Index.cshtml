@@ -14,6 +14,17 @@
         <div class="header-line">
             <h2>Document Verifier Request</h2>
         </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="text-end">
+                    <a class="btn btn-primary save-btn text-bold load-add" href="/Home/ListPayStubResults">Paystub Results</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="btn btn-primary save-btn text-bold load-add" href="/Validate/Index">Paystub Validator</a>
+                </div>
+            </div>
+        </div>
+
+
         <div class="form-wrap">
             <form asp-action="Index" method="post" asp-controller="Home" id="document-verifier-submit" autocomplete="off" enctype="multipart/form-data">
                 <div class="row">
