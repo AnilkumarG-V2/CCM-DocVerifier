@@ -1,30 +1,26 @@
-﻿using Newtonsoft.Json;
-using System.Text;
-using V2.DocVerifier.Models;
-using Spire.Pdf;
-using Spire.Pdf.Graphics;
+﻿using V2.DocVerifier.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
 using V2.DocVerifier.Services.Resources;
+using V2.DocVerifier.Services.Interfaces;
 
 namespace V2.DocVerifier.Services
 {
-    public class DocValidatorServcie : IDocValidator
+    public class DocValidatorService : IDocValidator
     {
-        private readonly ILogger<DocValidatorServcie> _logger;
-        private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
+        private readonly ILogger<DocValidatorService> _logger;
+        private readonly IFileProcessor _fileProcessor;
+        private readonly IGeminiClient _geminiClient;
 
-        public DocValidatorServcie(ILogger<DocValidatorServcie> logger, HttpClient httpClient, IConfiguration configuration)
+        public DocValidatorService(ILogger<DocValidatorService> logger, IFileProcessor fileProcessor, IGeminiClient geminiClient)
         {
             _logger = logger;
-            _httpClient = httpClient;
-            _configuration = configuration;
+            _fileProcessor = fileProcessor;
+            _geminiClient = geminiClient;
         }
 
         public async Task<List<GeminiDestinationData>> ValidateAsync(GeminiViewModel model)
         {
-            await SplitFileAsync(model);
+            await _fileProcessor.SplitFileAsync(model);
             model.FileName = model.FormFile.FileName;
             var json = await ProcessTaskAsync(model);
             return json;
@@ -46,7 +42,7 @@ namespace V2.DocVerifier.Services
 
         private async Task ProcessFilesAsync(GeminiViewModel model, int pageNumber, List<GeminiDestinationData> response, string file)
         {
-            var _responseData = await GetGeminiResponseAsync(Resource.ValidatorPrompt, file);
+            var _responseData = await _geminiClient.GetGeminiResponseAsync<GeminiDestinationData>(Resource.ValidatorPrompt, file);
             foreach (var item in _responseData)
             {
                 item.PageNumber = Convert.ToString(pageNumber++);
@@ -55,79 +51,6 @@ namespace V2.DocVerifier.Services
                 item.FileName = model.FileName;
                 response.Add(item);
             }
-        }
-
-        private async Task SplitFileAsync(GeminiViewModel model)
-        {
-            string _datetime = DateTime.Now.ToString(Resource.FileNameDateTimeFormat);
-            if (model.FormFile.Length > 0)
-            {
-                var _path = @$"{_configuration[Resource.ConfiguredImagePath]}{_datetime}";
-                Directory.CreateDirectory(_path);
-
-                model.FilePath = _path;
-
-                string filePathWithFileName = $@"{_path}\{model.FormFile.FileName}";
-
-                using (Stream fileStream = new FileStream(filePathWithFileName, FileMode.Create))
-                {
-                    await model.FormFile.CopyToAsync(fileStream);
-                }
-
-                if (model.FormFile.ContentType.ToLower().Contains(Resource.PDFFileExtension))
-                {
-                    PdfDocument pdfDocument = new PdfDocument();
-                    pdfDocument.LoadFromFile(filePathWithFileName);
-
-                    for (int _counter = 0; _counter < pdfDocument.Pages.Count; ++_counter)
-                    {
-                        var image = pdfDocument.SaveAsImage(_counter, PdfImageType.Bitmap);
-                        image.Save(@$"{_path}\{Resource.ImageFilePrefix}{_counter + 1}.{Resource.DestinationImageFileExtension}");
-                        model.ImageFiles.Add(@$"{_path}\{Resource.ImageFilePrefix}{_counter + 1}.{Resource.DestinationImageFileExtension}");
-                    }
-                }
-                else
-                {
-                    model.ImageFiles.Add(filePathWithFileName);
-                }
-            }
-        }
-
-        private async Task<List<GeminiDestinationData>> GetGeminiResponseAsync(string prompt, string fileName)
-        {
-            try
-            {
-                HttpResponseMessage _response = null;
-                string fileContent = string.Empty;
-                if (!string.IsNullOrWhiteSpace(fileName))
-                {
-                    var fileBytes = System.IO.File.ReadAllBytes(fileName);
-                    fileContent = Convert.ToBase64String(fileBytes);
-                    var jsonFile = GetPrompt(prompt, fileContent);
-                    HttpContent content = new StringContent(jsonFile, Encoding.UTF8, Resource.ResponseMimeType);
-                    _response = await _httpClient.PostAsync(@$"{_configuration[Resource.DocVerifierEndPoint]}{_configuration[Resource.APIKey]}", content);
-                }
-                var _responseData = await _response.Content.ReadAsStringAsync();
-                var _json = JsonConvert.DeserializeObject<dynamic>(_responseData);
-                var _text = _json?.candidates[0]?.content?.parts[0].text;
-                List<GeminiDestinationData> _responseObject = JsonConvert.DeserializeObject<List<GeminiDestinationData>>(_text.ToString());
-                _responseObject.ForEach(x => x.ImageContent = fileContent);
-                return _responseObject;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
-        private string GetPrompt(string prompt, string fileContent)
-        {
-            var _geminiPrompt = new GeminiPrompt();
-            var _content = new Content();
-            _content.Parts.Add(new { text = prompt });
-            _content.Parts.Add(new { inline_data = new InlineData() { Data = fileContent } });
-            _geminiPrompt.Contents.Add(_content);
-            return JsonConvert.SerializeObject(_geminiPrompt);
         }
     }
 }

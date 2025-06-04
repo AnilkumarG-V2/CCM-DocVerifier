@@ -7,52 +7,10 @@ using System.Threading.Tasks;
 
 namespace V2.DocVerifier.Models
 {
-    public class GeminiDestinationData
+    public class GeminiDestinationData : GeminiBaseModel
     {
-        [JsonProperty(PropertyName = "fileName")]
-        public string FileName { get; set; }
-
-        [JsonProperty(PropertyName = "contentType")]
-        public string ContentType { get; set; }
-
-        [JsonProperty(PropertyName = "documentType")]
-        public string DocumentType { get; set; }
-
-        [JsonProperty(PropertyName = "pageNumber")]
-        public string PageNumber { get; set; }
-
         [JsonProperty(PropertyName = "elements")]
         public DataElements Elements { get; set; }
-
-        [JsonProperty(PropertyName = "imageName")]
-        public string ImageName { get; set; }
-
-        [JsonProperty(PropertyName = "confidenceScore")]
-        public float ConfidenceScore { get; set; }
-
-        [JsonProperty(PropertyName = "imageHeight")]
-        public float ImageHeight { get; set; }
-
-        [JsonProperty(PropertyName = "imageWidth")]
-        public float ImageWidth { get; set; }
-
-        [JsonProperty(PropertyName = "imageContent")]
-        public string ImageContent { get; set; }
-
-        [JsonProperty(PropertyName = "aspectRatio")]
-        public float AspectRatio { get; set; }
-
-        [JsonProperty(PropertyName = "imageResolutionX")]
-        public float ImageResolutionX { get; set; }
-
-        [JsonProperty(PropertyName = "imageResolutionY")]
-        public float ImageResolutionY { get; set; }
-
-        [JsonProperty(PropertyName = "isFraudDocument")]
-        public bool IsFraudDocument { get; set; }
-
-        [JsonProperty(PropertyName = "isReissued")]
-        public bool IsReissued { get; set; }
     }
 
     public class DataElements

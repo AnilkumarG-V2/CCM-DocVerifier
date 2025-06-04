@@ -1,22 +1,21 @@
 using V2.DocVerifier.Services;
+using V2.DocVerifier.Services.Interfaces;
+using V2.DocVerifier.Services.Services;
+using V2.DocVerifier.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IDocVerifier, DocVerifierService>();
-builder.Services.AddTransient<IDocValidator, DocValidatorServcie>();
+builder.Services.AddTransient<IDocValidator, DocValidatorService>();
+builder.Services.AddTransient<IFileProcessor, FileProcessor>();
+builder.Services.AddTransient<IGeminiClient, GeminiClient>();
 
-builder.Services.AddHttpClient<IDocVerifier, DocVerifierService>(client => {
-    client.BaseAddress = new Uri(builder.Configuration["DocVerifierURL"]);
-
-});
-
-builder.Services.AddHttpClient<IDocValidator, DocValidatorServcie>(client => {
-    client.BaseAddress = new Uri(builder.Configuration["DocVerifierURL"]);
+builder.Services.AddHttpClient<IGeminiClient, GeminiClient>(client => {
+    client.BaseAddress = new Uri(builder.Configuration[APIConstants.DocVerifierURLConfigName]);
 
 });
 
