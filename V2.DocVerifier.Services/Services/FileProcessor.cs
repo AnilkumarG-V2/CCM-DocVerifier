@@ -16,6 +16,11 @@ namespace V2.DocVerifier.Services.Services
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// If the uploaded file is PDF then using SpirePDF SDK, the document is iterated through pages and each page is extracted and stored as image for further processing.
+        /// </summary>
+        /// <param name="model">GeminiViewModel</param>
+        /// <returns></returns>
         public async Task SplitFileAsync(GeminiViewModel model)
         {
             string _datetime = DateTime.Now.ToString(Resource.FileNameDateTimeFormat);
@@ -35,14 +40,16 @@ namespace V2.DocVerifier.Services.Services
 
                 if (model.FormFile.ContentType.ToLower().Contains(Resource.PDFFileExtension))
                 {
-                    PdfDocument pdfDocument = new PdfDocument();
-                    pdfDocument.LoadFromFile(filePathWithFileName);
-
-                    for (int _counter = 0; _counter < pdfDocument.Pages.Count; ++_counter)
+                    using (PdfDocument pdfDocument = new PdfDocument())
                     {
-                        var image = pdfDocument.SaveAsImage(_counter, PdfImageType.Bitmap);
-                        image.Save(@$"{_path}\{Resource.ImageFilePrefix}{_counter + 1}.{Resource.DestinationImageFileExtension}");
-                        model.ImageFiles.Add(@$"{_path}\{Resource.ImageFilePrefix}{_counter + 1}.{Resource.DestinationImageFileExtension}");
+                        pdfDocument.LoadFromFile(filePathWithFileName);
+
+                        for (int _counter = 0; _counter < pdfDocument.Pages.Count; ++_counter)
+                        {
+                            var image = pdfDocument.SaveAsImage(_counter, PdfImageType.Bitmap);
+                            image.Save(@$"{_path}\{Resource.ImageFilePrefix}{_counter + 1}.{Resource.DestinationImageFileExtension}");
+                            model.ImageFiles.Add(@$"{_path}\{Resource.ImageFilePrefix}{_counter + 1}.{Resource.DestinationImageFileExtension}");
+                        }
                     }
                 }
                 else

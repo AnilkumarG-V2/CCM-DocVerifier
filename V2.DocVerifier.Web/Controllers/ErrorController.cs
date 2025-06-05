@@ -9,6 +9,10 @@ namespace V2.DocVerifier.Web.Controllers
     [Route("/Error")]
     public class ErrorController : Controller
     {
+        /// <summary>
+        /// Generic action method which will be invoked incase of any exception across the application
+        /// </summary>
+        /// <returns>IActionResult</returns>
         [AllowAnonymous]
         public IActionResult Index()
         {

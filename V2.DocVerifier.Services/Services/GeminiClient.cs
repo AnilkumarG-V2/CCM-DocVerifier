@@ -18,6 +18,13 @@ namespace V2.DocVerifier.Services.Services
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// This is Generic method for invoking the Gemini API for extracting the data from the image using Gemini API.
+        /// </summary>
+        /// <typeparam name="T">GeminiModelBase</typeparam>
+        /// <param name="prompt">string</param>
+        /// <param name="fileName">string</param>
+        /// <returns></returns>
         public async Task<List<T>> GetGeminiResponseAsync<T>(string prompt, string fileName) where T : GeminiBaseModel
         {
             try
@@ -32,12 +39,19 @@ namespace V2.DocVerifier.Services.Services
                     HttpContent content = new StringContent(jsonFile, Encoding.UTF8, Resource.ResponseMimeType);
                     _response = await _httpClient.PostAsync(@$"{_configuration[Resource.DocVerifierEndPoint]}{_configuration[Resource.APIKey]}", content);
                 }
-                var _responseData = await _response.Content.ReadAsStringAsync();
-                var _json = JsonConvert.DeserializeObject<dynamic>(_responseData);
-                var _text = _json?.candidates[0]?.content?.parts[0].text;
-                List<T> _responseObject = JsonConvert.DeserializeObject<List<T>>(_text.ToString());
-                _responseObject.ForEach(x => x.ImageContent = fileContent);
-                return _responseObject;
+                if(_response.IsSuccessStatusCode)
+                {
+                    var _responseData = await _response.Content.ReadAsStringAsync();
+                    var _json = JsonConvert.DeserializeObject<dynamic>(_responseData);
+                    var _text = _json?.candidates[0]?.content?.parts[0].text;
+                    List<T> _responseObject = JsonConvert.DeserializeObject<List<T>>(_text.ToString());
+                    _responseObject.ForEach(x => x.ImageContent = fileContent);
+                    return _responseObject;
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception ex)
             {
@@ -45,6 +59,12 @@ namespace V2.DocVerifier.Services.Services
             }
         }
 
+        /// <summary>
+        /// Method to create the prompt object.
+        /// </summary>
+        /// <param name="prompt">string</param>
+        /// <param name="fileContent">string</param>
+        /// <returns></returns>
         private string GetPrompt(string prompt, string fileContent)
         {
             var _geminiPrompt = new GeminiPrompt();

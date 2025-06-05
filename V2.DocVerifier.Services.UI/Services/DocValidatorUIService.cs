@@ -23,6 +23,11 @@ namespace V2.DocVerifier.Services.UI.Services
             _hostEnvironment = hostEnvironment;
         }
 
+        /// <summary>
+        /// Method for validating the data stored in json file against the extracted data using Gemini
+        /// </summary>
+        /// <param name="model">GeminiRequest</param>
+        /// <returns>List<GeminiDestinationData></returns>
         public async Task<List<GeminiDestinationData>> ValidateAsync(GeminiRequest model)
         {
             var _getSourceData = await GetSourceDataAsync();
@@ -31,6 +36,12 @@ namespace V2.DocVerifier.Services.UI.Services
             return _geminiData;
         }
 
+        /// <summary>
+        /// Assignes the source json data to the final response from Gemini
+        /// </summary>
+        /// <param name="destData">List<GeminiDestinationData></param>
+        /// <param name="sourceData">PayStubSourceData</param>
+        /// <returns></returns>
         private async Task AssignSourceDataAsync(List<GeminiDestinationData> destData, PayStubSourceData sourceData)
         {
             foreach (var data in destData)
@@ -43,6 +54,11 @@ namespace V2.DocVerifier.Services.UI.Services
             }
         }
 
+        /// <summary>
+        /// Get the extracted data from Gemini using the DocVerifier API
+        /// </summary>
+        /// <param name="model">GeminiRequest</param>
+        /// <returns>List<GeminiDestinationData></returns>
         private async Task<List<GeminiDestinationData>> GetGeminiDataAsync(GeminiRequest model)
         {
             HttpResponseMessage _response = null;
@@ -56,6 +72,7 @@ namespace V2.DocVerifier.Services.UI.Services
                 _response = await _httpClient.PostAsync(@$"{_configuration["DocValidatorURL"]}", content);
                 var _responseData = await _response.Content.ReadAsStringAsync();
                 List<GeminiDestinationData> _responseObject = JsonConvert.DeserializeObject<List<GeminiDestinationData>>(_responseData.ToString());
+                _fileContent.Dispose();
                 return _responseObject;
             }
             catch (Exception ex)
@@ -64,6 +81,10 @@ namespace V2.DocVerifier.Services.UI.Services
             }
         }
 
+        /// <summary>
+        /// Reads the source json data from the json file.
+        /// </summary>
+        /// <returns>PayStubSourceData</returns>
         private async Task<PayStubSourceData> GetSourceDataAsync()
         {
             PayStubSourceData _data = new PayStubSourceData();

@@ -23,6 +23,11 @@ namespace V2.DocVerifier.Services.UI.Services
             _hostEnvironment = hostEnvironment;
         }
 
+        /// <summary>
+        /// Method for uploading the files for extraction of data using Gemini.
+        /// </summary>
+        /// <param name="model">GeminiRequest</param>
+        /// <returns>List<GeminiResponse></returns>
         public async Task<List<GeminiResponse>> ExecuteAsync(GeminiRequest model)
         {
             HttpResponseMessage _response = null;
@@ -36,6 +41,7 @@ namespace V2.DocVerifier.Services.UI.Services
                 _response = await _httpClient.PostAsync(@$"{_configuration["DocVerifierURL"]}", content);
                 var _responseData = await _response.Content.ReadAsStringAsync();
                 List<GeminiResponse> _responseObject =  JsonConvert.DeserializeObject<List<GeminiResponse>>(_responseData.ToString());
+                _fileContent.Dispose();
                 return _responseObject;
             }
             catch (Exception ex)
@@ -44,6 +50,10 @@ namespace V2.DocVerifier.Services.UI.Services
             }
         }
 
+        /// <summary>
+        /// Get the list of result for the 37 paystubs files
+        /// </summary>
+        /// <returns>List<GeminiPayStubResult></returns>
         public async Task<List<GeminiPayStubResult>> GetPayStubResultsAsync()
         {
             List<GeminiPayStubResult> _collection = new List<GeminiPayStubResult>();
@@ -58,6 +68,11 @@ namespace V2.DocVerifier.Services.UI.Services
             return _collection;
         }
 
+        /// <summary>
+        /// Get the results details for the 37 paystubs files
+        /// </summary>
+        /// <param name="fileName">string</param>
+        /// <returns>List<GeminiResponse></returns>
         public async Task<List<GeminiResponse>> LoadPayStubAsync(string fileName)
         {
             var _path = @$"{_hostEnvironment.ContentRootPath}/wwwroot/js/results/{fileName}";

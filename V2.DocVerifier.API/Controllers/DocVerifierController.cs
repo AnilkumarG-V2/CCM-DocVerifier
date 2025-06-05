@@ -8,18 +8,20 @@ namespace V2.DocVerifier.API.Controllers
     [Route("[controller]/[action]")]
     public class DocVerifierController : ControllerBase
     {
-
-        private readonly ILogger<DocVerifierController> _logger;
         private readonly IDocVerifier _docVerifier;
         private readonly IDocValidator _docValidator;
 
-        public DocVerifierController(ILogger<DocVerifierController> logger, IDocVerifier docVerifier, IDocValidator docValidator)
+        public DocVerifierController(IDocVerifier docVerifier, IDocValidator docValidator)
         {
-            _logger = logger;
             _docVerifier = docVerifier;
             _docValidator = docValidator;
         }
 
+        /// <summary>
+        /// Action method for uploading the files for extraction of data using Gemini.
+        /// </summary>
+        /// <param name="model">GeminiRequest</param>
+        /// <returns>IActionResult</returns>
         [HttpPost]
         public async Task<IActionResult> Post(GeminiRequest model)
         {
@@ -27,7 +29,11 @@ namespace V2.DocVerifier.API.Controllers
             return new OkObjectResult(await _docVerifier.ProcessAsync(viewModel));
         }
 
-
+        /// <summary>
+        /// Action method for validating the data stored in json file against the extracted data using Gemini
+        /// </summary>
+        /// <param name="model">GeminiRequest</param>
+        /// <returns>IActionResult</returns>
         [HttpPost]
         public async Task<IActionResult> Validate(GeminiRequest model)
         {
